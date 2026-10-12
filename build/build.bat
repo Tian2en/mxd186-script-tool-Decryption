@@ -1,52 +1,79 @@
 @echo off
-chcp 65001 >nul
 setlocal
-
 rem ============================================================
-rem  MXD186 è„šæœ¬å·¥å…· - ä¸€é”®æ‰“åŒ…è„šæœ¬
-rem  äº§ç‰©: dist\MXD186è„šæœ¬å·¥å…·.exe
+rem  MXD186 ½Å±¾¹¤¾ß - Ò»¼ü´ò°ü½Å±¾
+rem  ²úÎï: dist\MXD186½Å±¾¹¤¾ß.exe
 rem ============================================================
 
 cd /d "%~dp0.."
-echo [1/5] å·¥ä½œç›®å½•: %CD%
+echo [1/5] ¹¤×÷Ä¿Â¼: %CD%
 
+rem ---- ²éÕÒ git/python ----
 where python >nul 2>nul
 if errorlevel 1 (
-    echo [é”™è¯¯] æœªæ‰¾åˆ° pythonï¼Œè¯·å…ˆå®‰è£… Python 3.8+ å¹¶åŠ å…¥ PATH
-    pause & exit /b 1
+    echo [´íÎó] Î´ÕÒµ½ python£¬ÇëÏÈ°²×° Python 3.8+ ²¢¼ÓÈë PATH
+    pause
+    exit /b 1
 )
 
-echo [2/5] å®‰è£… Python ä¾èµ–...
-python -m pip install -q -r requirements.txt || (echo [é”™è¯¯] ä¾èµ–å®‰è£…å¤±è´¥ & pause & exit /b 1)
+echo [2/5] °²×° Python ÒÀÀµ...
+python -m pip install -q -r requirements.txt
+if errorlevel 1 (
+    echo [´íÎó] ÒÀÀµ°²×°Ê§°Ü
+    pause
+    exit /b 1
+)
 
-echo [3/5] å‡†å¤‡ Node è¿è¡Œæ—¶...
+echo [3/5] ×¼±¸ Node ÔËĞĞÊ±...
 if not exist "node.exe" (
-    python build\fetch_node.py || (echo [é”™è¯¯] Node ä¸‹è½½å¤±è´¥ & pause & exit /b 1)
+    python build\fetch_node.py
+    if errorlevel 1 (
+        echo [´íÎó] Node ÏÂÔØÊ§°Ü
+        pause
+        exit /b 1
+    )
 ) else (
-    echo   node.exe å·²å­˜åœ¨ï¼Œè·³è¿‡
+    echo   node.exe ÒÑ´æÔÚ£¬Ìø¹ı
 )
 
-echo [4/5] æ£€æŸ¥åæ··æ·†å™¨ bundle...
+echo [4/5] ¼ì²é·´»ìÏıÆ÷ bundle...
 if not exist "assets\deob_bundle.js" (
-    echo   æœªæ‰¾åˆ° assets\deob_bundle.jsï¼Œå°è¯•ç”¨ rollup ç”Ÿæˆ...
+    echo   Î´ÕÒµ½ assets\deob_bundle.js£¬³¢ÊÔÓÃ rollup Éú³É...
     pushd build
-    call npm install || (echo [é”™è¯¯] npm install å¤±è´¥ & popd & pause & exit /b 1)
-    call npm run bundle || (echo [é”™è¯¯] rollup æ‰“åŒ…å¤±è´¥ & popd & pause & exit /b 1)
+    call npm install
+    if errorlevel 1 (
+        echo [´íÎó] npm install Ê§°Ü
+        popd
+        pause
+        exit /b 1
+    )
+    call npm run bundle
+    if errorlevel 1 (
+        echo [´íÎó] rollup ´ò°üÊ§°Ü
+        popd
+        pause
+        exit /b 1
+    )
     popd
 )
 
-echo [5/5] PyInstaller æ‰“åŒ…...
-rem æ³¨æ„ï¼š--specpath ä¼šæ”¹å˜ç›¸å¯¹è·¯å¾„çš„è§£æåŸºå‡†ï¼Œå› æ­¤ --add-data å¿…é¡»ç”¨ç»å¯¹è·¯å¾„
+echo [5/5] PyInstaller ´ò°ü...
+rem ×¢Òâ: --specpath »á¸Ä±äÏà¶ÔÂ·¾¶½âÎö»ù×¼£¬Òò´Ë --add-data ±ØĞëÓÃ¾ø¶ÔÂ·¾¶
 python -m PyInstaller --noconfirm --onefile --windowed ^
-    --name "MXD186è„šæœ¬å·¥å…·" ^
+    --name "MXD186½Å±¾¹¤¾ß" ^
     --add-data "%CD%\node.exe;." ^
     --add-data "%CD%\assets\deob_bundle.js;." ^
     --collect-all tkinterdnd2 ^
     --distpath "%CD%\dist" --workpath "%CD%\build\pyinstaller" --specpath "%CD%\build" ^
-    "%CD%\src\app.py" || (echo [é”™è¯¯] æ‰“åŒ…å¤±è´¥ & pause & exit /b 1)
+    "%CD%\src\app.py"
+if errorlevel 1 (
+    echo [´íÎó] ´ò°üÊ§°Ü
+    pause
+    exit /b 1
+)
 
 echo.
 echo ============================================================
-echo  æ‰“åŒ…å®Œæˆ: %CD%\dist\MXD186è„šæœ¬å·¥å…·.exe
+echo  ´ò°üÍê³É: %CD%\dist\MXD186½Å±¾¹¤¾ß.exe
 echo ============================================================
 pause
