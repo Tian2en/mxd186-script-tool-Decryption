@@ -1,0 +1,6 @@
+# 运行依赖
+pycryptodome>=3.19
+tkinterdnd2>=0.3.0
+
+# 打包依赖（仅构建 exe 时需要）
+pyinstaller>=6.0

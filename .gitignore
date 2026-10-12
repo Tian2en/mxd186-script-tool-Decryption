@@ -1,0 +1,39 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ---- 打包产物 ----
+build/pyinstaller/
+dist/
+*.spec
+*.manifest
+
+# ---- Node ----
+node_modules/
+node.exe
+npm-debug.log*
+
+# ---- 运行时下载的 Node 运行时 ----
+runtime/
+vendor/
+
+# ---- 本地配置（含密钥/路径等） ----
+config.ini
+config.local.*
+*.local.json
+
+# ---- 编辑器 / 系统 ----
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ---- 测试与临时目录 ----
+test_out/
+tmp/
+*.log
