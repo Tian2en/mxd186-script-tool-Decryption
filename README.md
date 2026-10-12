@@ -82,8 +82,8 @@ SecretKeySpec key = new SecretKeySpec(kg.generateKey().getEncoded(), "AES");
 ### 获取源码
 
 ```bash
-git clone https://github.com/Tian2en/mxd186-script-tool.git
-cd mxd186-script-tool
+git clone https://github.com/Tian2en/mxd186-script-tool-Decryption.git
+cd mxd186-script-tool-Decryption
 ```
 
 ### 环境要求
