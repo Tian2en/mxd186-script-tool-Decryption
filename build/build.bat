@@ -36,13 +36,14 @@ if not exist "assets\deob_bundle.js" (
 )
 
 echo [5/5] PyInstaller 打包...
+rem 注意：--specpath 会改变相对路径的解析基准，因此 --add-data 必须用绝对路径
 python -m PyInstaller --noconfirm --onefile --windowed ^
     --name "MXD186脚本工具" ^
-    --add-data "node.exe;." ^
-    --add-data "assets/deob_bundle.js;." ^
+    --add-data "%CD%\node.exe;." ^
+    --add-data "%CD%\assets\deob_bundle.js;." ^
     --collect-all tkinterdnd2 ^
-    --distpath dist --workpath build/pyinstaller --specpath build ^
-    src/app.py || (echo [错误] 打包失败 & pause & exit /b 1)
+    --distpath "%CD%\dist" --workpath "%CD%\build\pyinstaller" --specpath "%CD%\build" ^
+    "%CD%\src\app.py" || (echo [错误] 打包失败 & pause & exit /b 1)
 
 echo.
 echo ============================================================

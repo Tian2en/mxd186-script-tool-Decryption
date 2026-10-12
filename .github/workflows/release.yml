@@ -36,11 +36,13 @@ jobs:
         run: |
           python -m PyInstaller --noconfirm --onefile --windowed `
             --name "MXD186脚本工具" `
-            --add-data "node.exe;." `
-            --add-data "assets/deob_bundle.js;." `
+            --add-data "$env:GITHUB_WORKSPACE\node.exe;." `
+            --add-data "$env:GITHUB_WORKSPACE\assets\deob_bundle.js;." `
             --collect-all tkinterdnd2 `
-            --distpath dist --workpath build/pyinstaller --specpath build `
-            src/app.py
+            --distpath "$env:GITHUB_WORKSPACE\dist" `
+            --workpath "$env:GITHUB_WORKSPACE\build\pyinstaller" `
+            --specpath "$env:GITHUB_WORKSPACE\build" `
+            "$env:GITHUB_WORKSPACE\src\app.py"
         shell: pwsh
 
       - name: Upload artifact

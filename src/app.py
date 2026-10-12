@@ -52,7 +52,29 @@ OK = "#37d6a0"
 ERR = "#ff6b6b"
 
 
+def _candidate_dirs():
+    """资源查找目录：兼容「PyInstaller 冻结」与「源码直接运行」两种布局"""
+    dirs = []
+    meipass = getattr(sys, "_MEIPASS", None)
+    if meipass:
+        dirs.append(meipass)
+    here = os.path.dirname(os.path.abspath(__file__))
+    parent = os.path.dirname(here)
+    dirs += [
+        here,                          # src/
+        os.path.join(here, "assets"),  # src/assets/
+        os.path.join(parent, "assets"),  # 项目根/assets/
+        parent,                        # 项目根/
+        os.getcwd(),
+    ]
+    return dirs
+
+
 def resource_path(name: str) -> str:
+    for d in _candidate_dirs():
+        p = os.path.join(d, name)
+        if os.path.exists(p):
+            return p
     base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base, name)
 
