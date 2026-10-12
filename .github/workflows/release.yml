@@ -73,11 +73,12 @@ jobs:
           $size = (Get-Item $exe).Length
           Write-Host "exe 大小: $size 字节"
           if ($size -lt 20MB) { throw "exe 体积异常，可能缺少内置资源" }
-          # --cli 参数不足时应返回 2；能返回说明程序可以正常启动
-          & $exe --cli
-          $code = $LASTEXITCODE
-          Write-Host "自检退出码: $code"
-          if ($code -ne 2) { throw "exe 自检失败，退出码 $code" }
+          # exe 是 GUI 子系统程序：PowerShell 的 & 不会等待它，$LASTEXITCODE 取不到值，
+          # 必须用 Start-Process -Wait -PassThru 才能拿到退出码。
+          # --cli 参数不足时应返回 2，能正常返回说明程序可以启动。
+          $p = Start-Process -FilePath $exe -ArgumentList '--cli' -Wait -PassThru
+          Write-Host "自检退出码: $($p.ExitCode)"
+          if ($p.ExitCode -ne 2) { throw "exe 自检失败，退出码 $($p.ExitCode)" }
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
