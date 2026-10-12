@@ -79,6 +79,13 @@ SecretKeySpec key = new SecretKeySpec(kg.generateKey().getEncoded(), "AES");
 
 ## 安装与构建
 
+### 获取源码
+
+```bash
+git clone https://github.com/Tian2en/mxd186-script-tool.git
+cd mxd186-script-tool
+```
+
 ### 环境要求
 
 - **Python 3.8+**（Windows 需带 tkinter）
